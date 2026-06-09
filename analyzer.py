@@ -48,7 +48,7 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no pream
   "watchlist_summary": {{
     "SYMBOL": {{
       "sentiment": "BULLISH",
-      "trigger": "brief reason or NOT IMPACTED"
+      "trigger": "brief specific reason"
     }}
   }}
 }}
@@ -58,13 +58,13 @@ Rules:
 - what_it_means: exactly 2 sentences — be tight, specific, no padding
 - pros/cons: max 2 points each; use empty array [] if genuinely not applicable
 - watchlist_stocks per story: only stocks directly impacted (can be empty {{}})
-- watchlist_summary: include ALL watchlist stocks, no exceptions
+- watchlist_summary: include ONLY stocks that are genuinely impacted by today's news — omit unaffected ones entirely
 - nifty_outlook: must be BULLISH, BEARISH, or NEUTRAL
 - Name sectors, companies, policies, numbers — no generic statements"""
 
     message = client.messages.create(
         model="claude-opus-4-8",
-        max_tokens=6000,
+        max_tokens=8192,
         messages=[{"role": "user", "content": prompt}],
     )
 

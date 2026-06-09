@@ -13,7 +13,6 @@ IST = timezone(timedelta(hours=5, minutes=30))
 
 
 def _find_xlsx() -> str | None:
-    """Return the first .xlsx file in the repo root, case-insensitively."""
     matches = glob.glob("*.xlsx") + glob.glob("*.XLSX")
     return matches[0] if matches else None
 
@@ -51,6 +50,18 @@ def load_watchlist() -> list:
     return stocks
 
 
+def _fill_watchlist_gaps(analysis: dict, watchlist: list) -> dict:
+    """Add NOT IMPACTED for any watchlist stocks Claude omitted."""
+    summary = analysis.setdefault("watchlist_summary", {})
+    for stock in watchlist:
+        if stock["symbol"] not in summary:
+            summary[stock["symbol"]] = {
+                "sentiment": "NOT IMPACTED",
+                "trigger": "No relevant news today",
+            }
+    return analysis
+
+
 def main():
     now = datetime.now(tz=IST)
     print(f"[{now.strftime('%Y-%m-%d %H:%M IST')}] Morning news synthesis starting...")
@@ -68,6 +79,7 @@ def main():
 
     print(f"Analyzing {len(articles)} articles with Claude...")
     analysis = analyze_news(articles, watchlist)
+    analysis = _fill_watchlist_gaps(analysis, watchlist)
 
     date_str = now.strftime("%A, %d %B %Y")
     subject = f"Morning Market Brief — {date_str}"
