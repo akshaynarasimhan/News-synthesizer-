@@ -14,7 +14,7 @@ def analyze_news(articles: List[Dict], watchlist: List[Dict]) -> Dict:
     )
 
     watchlist_text = ", ".join(
-        f"{s['symbol']} ({s['name']}, {s['sector']})" for s in watchlist
+        f"{s['symbol']} ({s.get('sector', '')})".strip(" ()") for s in watchlist
     )
 
     prompt = f"""You are a sharp equity analyst at a top Indian brokerage. Write a morning market brief.

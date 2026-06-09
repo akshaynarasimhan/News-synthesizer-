@@ -26,10 +26,9 @@ def _load_from_excel(path: str) -> list:
             continue
         d = dict(zip(headers, row))
         symbol = str(d.get("symbol", "") or "").strip().upper()
-        name   = str(d.get("name",   "") or "").strip()
         sector = str(d.get("sector", "") or "").strip()
         if symbol:
-            stocks.append({"symbol": symbol, "name": name, "sector": sector})
+            stocks.append({"symbol": symbol, "sector": sector})
     return stocks
 
 
