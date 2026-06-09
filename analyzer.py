@@ -37,7 +37,7 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no pream
     {{
       "headline": "Sharp specific headline",
       "source": "source name",
-      "what_it_means": "2-3 sentences on direct impact for Indian equities — sectors, flows, sentiment.",
+      "what_it_means": "Exactly 2 sentences on direct impact for Indian equities — sectors, flows, sentiment.",
       "pros": ["specific positive"],
       "cons": ["specific risk"],
       "watchlist_stocks": {{
@@ -54,16 +54,17 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no pream
 }}
 
 Rules:
-- Select exactly 7-9 highest-impact stories for Indian equity markets
-- pros/cons: only include when genuinely applicable; use empty array [] if not relevant
+- Cover ALL meaningfully impactful stories for Indian equity markets — do not artificially cap the count (typically 10-15)
+- what_it_means: exactly 2 sentences — be tight, specific, no padding
+- pros/cons: max 2 points each; use empty array [] if genuinely not applicable
 - watchlist_stocks per story: only stocks directly impacted (can be empty {{}})
 - watchlist_summary: include ALL watchlist stocks, no exceptions
 - nifty_outlook: must be BULLISH, BEARISH, or NEUTRAL
-- Be specific — name sectors, companies, policies, numbers. No generic statements."""
+- Name sectors, companies, policies, numbers — no generic statements"""
 
     message = client.messages.create(
         model="claude-opus-4-8",
-        max_tokens=4096,
+        max_tokens=6000,
         messages=[{"role": "user", "content": prompt}],
     )
 

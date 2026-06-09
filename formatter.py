@@ -70,33 +70,42 @@ def format_email(analysis: Dict, date_str: str) -> str:
 <title>Morning Market Brief</title>
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#f1f5f9;color:#1e293b}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;background:#f1f5f9;color:#1e293b}}
 .wrap{{max-width:660px;margin:0 auto;background:#fff}}
-.hdr{{background:#0f172a;color:#fff;padding:22px 26px}}
-.hdr-title{{font-size:20px;font-weight:700;letter-spacing:-.3px}}
-.hdr-date{{color:#94a3b8;font-size:12px;margin-top:4px}}
-.outlook{{background:{outlook_color};color:#fff;padding:11px 26px;font-size:14px;font-weight:600}}
-.sec{{padding:18px 26px}}
-.sec-lbl{{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#94a3b8;margin-bottom:10px}}
-.macro{{background:#f8fafc;border-left:3px solid #0f172a;padding:13px 15px;font-size:13.5px;line-height:1.65;color:#334155;border-radius:0 6px 6px 0}}
-.card{{border:1px solid #e2e8f0;border-radius:8px;padding:15px;margin-bottom:12px}}
-.card-src{{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#64748b;margin-bottom:5px}}
-.card-headline{{font-size:15px;font-weight:700;line-height:1.3;margin-bottom:9px;color:#0f172a}}
-.card-impact{{font-size:13px;line-height:1.6;color:#475569;margin-bottom:10px}}
-.pc-row{{display:flex;gap:12px;margin-bottom:9px}}
-.pc-block{{flex:1;background:#f8fafc;border-radius:5px;padding:9px 11px}}
-.pc-label{{font-size:11px;font-weight:700;margin-bottom:5px}}
-.pc-block ul{{padding-left:16px;font-size:12px;color:#475569;line-height:1.5}}
-.chips-row{{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:12px}}
-.chips-label{{font-size:11px;font-weight:600;color:#475569;margin-right:3px}}
-.chip{{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:500}}
-.wl-tbl{{width:100%;border-collapse:collapse;font-size:13px}}
-.wl-tbl th{{text-align:left;padding:8px 10px;background:#f8fafc;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#94a3b8;border-bottom:2px solid #e2e8f0}}
-.wl-sym{{padding:9px 10px;font-weight:700;color:#0f172a}}
-.wl-trigger{{padding:9px 10px;color:#475569;font-size:12.5px}}
-.badge{{display:inline-block;padding:2px 8px;border-radius:20px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.3px}}
-.ftr{{background:#f8fafc;padding:14px 26px;font-size:11px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0}}
+.hdr{{background:#0f172a;color:#fff;padding:18px 24px}}
+.hdr-title{{font-size:18px;font-weight:700;letter-spacing:-.3px}}
+.hdr-date{{color:#94a3b8;font-size:12px;margin-top:3px}}
+.outlook{{background:{outlook_color};color:#fff;padding:10px 24px;font-size:14px;font-weight:600;line-height:1.4}}
+.sec{{padding:14px 24px}}
+.sec-lbl{{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#94a3b8;margin-bottom:8px}}
+.macro{{background:#f8fafc;border-left:3px solid #0f172a;padding:11px 14px;font-size:14px;line-height:1.6;color:#334155;border-radius:0 5px 5px 0}}
+.card{{border:1px solid #e2e8f0;border-radius:7px;padding:11px 13px;margin-bottom:8px}}
+.card-src{{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#64748b;margin-bottom:4px}}
+.card-headline{{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:7px;color:#0f172a}}
+.card-impact{{font-size:14px;line-height:1.55;color:#475569;margin-bottom:8px}}
+.pc-row{{display:flex;gap:10px;margin-bottom:7px}}
+.pc-block{{flex:1;background:#f8fafc;border-radius:4px;padding:7px 10px}}
+.pc-label{{font-size:11px;font-weight:700;margin-bottom:4px}}
+.pc-block ul{{padding-left:15px;font-size:13px;color:#475569;line-height:1.45}}
+.chips-row{{display:flex;flex-wrap:wrap;align-items:center;gap:4px}}
+.chips-label{{font-size:11px;font-weight:600;color:#475569;margin-right:2px}}
+.chip{{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:4px;padding:2px 7px;font-size:12px;font-weight:500}}
+.wl-tbl{{width:100%;border-collapse:collapse;font-size:14px}}
+.wl-tbl th{{text-align:left;padding:7px 9px;background:#f8fafc;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#94a3b8;border-bottom:2px solid #e2e8f0}}
+.wl-sym{{padding:8px 9px;font-weight:700;color:#0f172a}}
+.wl-trigger{{padding:8px 9px;color:#475569;font-size:13px}}
+.badge{{display:inline-block;padding:2px 7px;border-radius:20px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.3px}}
+.ftr{{background:#f8fafc;padding:12px 24px;font-size:11px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0}}
 @media(max-width:480px){{.pc-row{{flex-direction:column}}}}
+@media print{{
+  @page{{size:A4 portrait;margin:12mm 16mm}}
+  body{{background:#fff!important;font-size:14px}}
+  .wrap{{max-width:100%;box-shadow:none}}
+  .hdr,.outlook{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  .badge,.chip,.pc-block{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  .card{{break-inside:avoid;border-color:#ccc}}
+  .ftr{{display:none}}
+}}
 </style>
 </head>
 <body>
@@ -114,7 +123,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sa
   </div>
 
   <div class="sec">
-    <div class="sec-lbl">Top Stories</div>
+    <div class="sec-lbl">Stories</div>
     {stories_html}
   </div>
 
