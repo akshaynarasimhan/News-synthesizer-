@@ -1,0 +1,38 @@
+name: Morning Market Brief
+
+on:
+  schedule:
+    # 7:30 AM IST = 2:00 AM UTC  (IST is UTC+5:30)
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      recipient_override:
+        description: 'Override recipient email (leave blank to use secret)'
+        required: false
+        type: string
+
+jobs:
+  synthesize-and-send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run news synthesizer
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ inputs.recipient_override || secrets.RECIPIENT_EMAIL }}
+        run: python main.py

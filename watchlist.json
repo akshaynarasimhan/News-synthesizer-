@@ -1,0 +1,24 @@
+{
+  "stocks": [
+    {"symbol": "RELIANCE",    "name": "Reliance Industries",         "sector": "Energy / Telecom / Retail"},
+    {"symbol": "TCS",         "name": "Tata Consultancy Services",    "sector": "IT Services"},
+    {"symbol": "INFY",        "name": "Infosys",                     "sector": "IT Services"},
+    {"symbol": "HDFCBANK",    "name": "HDFC Bank",                    "sector": "Private Banking"},
+    {"symbol": "ICICIBANK",   "name": "ICICI Bank",                   "sector": "Private Banking"},
+    {"symbol": "HINDUNILVR",  "name": "Hindustan Unilever",           "sector": "FMCG"},
+    {"symbol": "ITC",         "name": "ITC Limited",                  "sector": "FMCG / Hotels / Agri"},
+    {"symbol": "BAJFINANCE",  "name": "Bajaj Finance",                "sector": "NBFC"},
+    {"symbol": "TATAMOTORS",  "name": "Tata Motors",                  "sector": "Automobiles"},
+    {"symbol": "MARUTI",      "name": "Maruti Suzuki",                "sector": "Automobiles"},
+    {"symbol": "WIPRO",       "name": "Wipro",                        "sector": "IT Services"},
+    {"symbol": "HCLTECH",     "name": "HCL Technologies",             "sector": "IT Services"},
+    {"symbol": "SUNPHARMA",   "name": "Sun Pharmaceutical",           "sector": "Pharma"},
+    {"symbol": "ONGC",        "name": "ONGC",                         "sector": "Oil & Gas"},
+    {"symbol": "SBIN",        "name": "State Bank of India",          "sector": "PSU Banking"},
+    {"symbol": "ADANIENT",    "name": "Adani Enterprises",            "sector": "Infrastructure / Energy"},
+    {"symbol": "TITAN",       "name": "Titan Company",                "sector": "Consumer / Jewellery"},
+    {"symbol": "NESTLEIND",   "name": "Nestle India",                 "sector": "FMCG"},
+    {"symbol": "COALINDIA",   "name": "Coal India",                   "sector": "Mining / Energy"},
+    {"symbol": "NTPC",        "name": "NTPC",                         "sector": "Power / Energy"}
+  ]
+}
