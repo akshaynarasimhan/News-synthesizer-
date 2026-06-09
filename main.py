@@ -1,4 +1,5 @@
 import os
+import glob
 import json
 import sys
 from datetime import datetime, timezone, timedelta
@@ -9,6 +10,12 @@ from formatter import format_email
 from notifier import send_email
 
 IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def _find_xlsx() -> str | None:
+    """Return the first .xlsx file in the repo root, case-insensitively."""
+    matches = glob.glob("*.xlsx") + glob.glob("*.XLSX")
+    return matches[0] if matches else None
 
 
 def _load_from_excel(path: str) -> list:
@@ -33,9 +40,10 @@ def _load_from_excel(path: str) -> list:
 
 
 def load_watchlist() -> list:
-    if os.path.exists("watchlist.xlsx"):
-        stocks = _load_from_excel("watchlist.xlsx")
-        print(f"  Loaded {len(stocks)} stocks from watchlist.xlsx")
+    xlsx = _find_xlsx()
+    if xlsx:
+        stocks = _load_from_excel(xlsx)
+        print(f"  Loaded {len(stocks)} stocks from {xlsx}")
         return stocks
     with open("watchlist.json") as f:
         stocks = json.load(f)["stocks"]
