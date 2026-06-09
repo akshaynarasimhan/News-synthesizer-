@@ -11,12 +11,47 @@ from notifier import send_email
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
+def _load_from_excel(path: str) -> list:
+    from openpyxl import load_workbook
+    wb = load_workbook(path, read_only=True, data_only=True)
+    ws = wb.active
+    rows = list(ws.iter_rows(values_only=True))
+    wb.close()
+    if not rows:
+        return []
+    headers = [str(h).strip().lower() if h else "" for h in rows[0]]
+    stocks = []
+    for row in rows[1:]:
+        if not any(row):
+            continue
+        d = dict(zip(headers, row))
+        symbol = str(d.get("symbol", "") or "").strip().upper()
+        name   = str(d.get("name",   "") or "").strip()
+        sector = str(d.get("sector", "") or "").strip()
+        if symbol:
+            stocks.append({"symbol": symbol, "name": name, "sector": sector})
+    return stocks
+
+
+def load_watchlist() -> list:
+    if os.path.exists("watchlist.xlsx"):
+        stocks = _load_from_excel("watchlist.xlsx")
+        print(f"  Loaded {len(stocks)} stocks from watchlist.xlsx")
+        return stocks
+    with open("watchlist.json") as f:
+        stocks = json.load(f)["stocks"]
+    print(f"  Loaded {len(stocks)} stocks from watchlist.json")
+    return stocks
+
+
 def main():
     now = datetime.now(tz=IST)
     print(f"[{now.strftime('%Y-%m-%d %H:%M IST')}] Morning news synthesis starting...")
 
-    with open("watchlist.json") as f:
-        watchlist = json.load(f)["stocks"]
+    watchlist = load_watchlist()
+    if not watchlist:
+        print("ERROR: Watchlist is empty. Exiting.")
+        sys.exit(1)
 
     print("Fetching news from Moneycontrol and Economic Times...")
     articles = fetch_news(hours_back=20)
