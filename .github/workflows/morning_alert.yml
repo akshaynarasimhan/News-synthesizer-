@@ -2,8 +2,8 @@ name: Morning Market Brief
 
 on:
   schedule:
-    # 7:30 AM IST = 2:00 AM UTC  (IST is UTC+5:30)
-    - cron: '0 2 * * *'
+    # 1:15 AM UTC = 6:45 AM IST (avoids busy :00 queue, buffer for GitHub delays)
+    - cron: '15 1 * * *'
   workflow_dispatch:
     inputs:
       recipient_override:
