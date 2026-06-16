@@ -88,7 +88,7 @@ def main():
 
     date_str = now.strftime("%A, %d %B %Y")
     subject = f"Morning Market Brief — {date_str}"
-    html_body = format_email(analysis, date_str)
+    html_body = format_email(analysis, date_str, company_articles)
 
     recipient = os.environ["RECIPIENT_EMAIL"]
     send_email(subject, html_body, recipient)

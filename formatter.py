@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 _SENTIMENT_COLOR = {
     "BULLISH": "#16a34a",
@@ -10,7 +10,51 @@ _SENTIMENT_COLOR = {
 _OUTLOOK_ICON = {"BULLISH": "▲", "BEARISH": "▼", "NEUTRAL": "◆"}
 
 
-def format_email(analysis: Dict, date_str: str) -> str:
+def _build_company_news_html(company_articles: List[Dict]) -> str:
+    if not company_articles:
+        return ""
+
+    # Group by company symbol, preserving insertion order
+    groups: dict = {}
+    for a in company_articles:
+        sym = a.get("company", "OTHER")
+        groups.setdefault(sym, []).append(a)
+
+    groups_html = ""
+    for sym, articles in groups.items():
+        items_html = ""
+        for a in articles:
+            title = a.get("title", "")
+            link = a.get("link", "")
+            published = a.get("published", "")
+            source = a.get("source", "").replace(f"[{sym}] ", "")
+            summary = a.get("summary", "")
+
+            title_tag = (
+                f'<a href="{link}" style="color:#1d4ed8;text-decoration:none">{title}</a>'
+                if link else title
+            )
+            items_html += f"""
+      <div class="co-item">
+        <div class="co-meta">{source} &middot; {published}</div>
+        <div class="co-title">{title_tag}</div>
+        {"" if not summary else f'<div class="co-summary">{summary}</div>'}
+      </div>"""
+
+        groups_html += f"""
+    <div class="co-group">
+      <div class="co-hdr">{sym}</div>
+      {items_html}
+    </div>"""
+
+    return f"""
+  <div class="sec">
+    <div class="sec-lbl">Company News &mdash; Last 24h</div>
+    {groups_html}
+  </div>"""
+
+
+def format_email(analysis: Dict, date_str: str, company_articles: List[Dict] | None = None) -> str:
     outlook = analysis.get("nifty_outlook", "NEUTRAL")
     outlook_color = _SENTIMENT_COLOR.get(outlook, "#d97706")
     outlook_icon = _OUTLOOK_ICON.get(outlook, "◆")
@@ -62,6 +106,8 @@ def format_email(analysis: Dict, date_str: str) -> str:
       <td class="wl-trigger">{trigger}</td>
     </tr>"""
 
+    company_news_section = _build_company_news_html(company_articles or [])
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,6 +141,13 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sa
 .wl-sym{{padding:8px 9px;font-weight:700;color:#0f172a}}
 .wl-trigger{{padding:8px 9px;color:#475569;font-size:13px}}
 .badge{{display:inline-block;padding:2px 7px;border-radius:20px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.3px}}
+.co-group{{border:1px solid #e2e8f0;border-radius:7px;overflow:hidden;margin-bottom:10px}}
+.co-hdr{{background:#0f172a;color:#fff;padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}}
+.co-item{{padding:8px 12px;border-bottom:1px solid #f1f5f9}}
+.co-item:last-child{{border-bottom:none}}
+.co-meta{{font-size:10px;color:#94a3b8;margin-bottom:3px}}
+.co-title{{font-size:13px;font-weight:600;color:#0f172a;margin-bottom:3px}}
+.co-summary{{font-size:12px;color:#64748b;line-height:1.4}}
 .ftr{{background:#f8fafc;padding:12px 24px;font-size:11px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0}}
 @media(max-width:480px){{.pc-row{{flex-direction:column}}}}
 @media print{{
@@ -104,6 +157,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sa
   .hdr,.outlook{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   .badge,.chip,.pc-block{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   .card{{break-inside:avoid;border-color:#ccc}}
+  .co-group{{break-inside:avoid}}
   .ftr{{display:none}}
 }}
 </style>
@@ -135,7 +189,9 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sa
     </table>
   </div>
 
-  <div class="ftr">Generated at 7:30 AM IST &middot; Powered by Claude &middot; Sources: Moneycontrol, Economic Times</div>
+  {company_news_section}
+
+  <div class="ftr">Generated at 7:30 AM IST &middot; Powered by Claude &middot; Sources: Moneycontrol, Economic Times, Google News</div>
 </div>
 </body>
 </html>"""
