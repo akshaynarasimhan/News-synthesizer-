@@ -19,7 +19,7 @@ def analyze_news(articles: List[Dict], watchlist: List[Dict]) -> Dict:
 
     prompt = f"""You are a sharp equity analyst at a top Indian brokerage. Write a morning market brief.
 
-NEWS FROM MONEYCONTROL & ECONOMIC TIMES (last 20 hours):
+NEWS (last 24 hours) — macro sources (Moneycontrol, ET) plus company-specific articles tagged [SYMBOL] in the source field:
 
 {news_text}
 

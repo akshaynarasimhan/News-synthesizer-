@@ -4,7 +4,7 @@ import json
 import sys
 from datetime import datetime, timezone, timedelta
 
-from scraper import fetch_news
+from scraper import fetch_news, fetch_company_news
 from analyzer import analyze_news
 from formatter import format_email
 from notifier import send_email
@@ -71,12 +71,17 @@ def main():
         print("ERROR: Watchlist is empty. Exiting.")
         sys.exit(1)
 
-    print("Fetching news from Moneycontrol and Economic Times...")
-    articles = fetch_news(hours_back=20)
-    if not articles:
-        print("ERROR: No articles fetched. Exiting.")
+    print("Fetching macro news from Moneycontrol and Economic Times...")
+    macro_articles = fetch_news(hours_back=24)
+    if not macro_articles:
+        print("ERROR: No macro articles fetched. Exiting.")
         sys.exit(1)
 
+    print("Fetching company-specific news for watchlist stocks...")
+    company_articles = fetch_company_news(watchlist, hours_back=24)
+
+    articles = macro_articles + company_articles
+    print(f"Total: {len(articles)} articles ({len(macro_articles)} macro + {len(company_articles)} company-specific)")
     print(f"Analyzing {len(articles)} articles with Claude...")
     analysis = analyze_news(articles, watchlist)
     analysis = _fill_watchlist_gaps(analysis, watchlist)
